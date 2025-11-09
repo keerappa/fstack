@@ -1,0 +1,150 @@
+⚙️ Commands
+npm create vite@latest program4
+# Select: React → JavaScript → No (rolldown)
+cd program4
+npm install
+npm run dev
+
+
+🧾 Files & Code
+📁 src/App.jsx
+import { useState } from "react";
+import StudentTable from "./StudentTable";
+import StudentForm from "./StudentForm";
+
+function App() {
+  const [students, setStudents] = useState([
+    { slno: 1, name: "Girish", usn: "RVCE001", tmarks: 150 },
+    { slno: 2, name: "Ravi", usn: "RVCE002", tmarks: 145 },
+  ]);
+
+  const handleAddStudent = (newStudent) => {
+    const newSlno = students.length + 1;
+    const updatedStudent = { slno: newSlno, ...newStudent };
+    setStudents([...students, updatedStudent]);
+  };
+
+  return (
+    <div>
+      <h1>Student Registration Portal</h1>
+      <StudentTable students={students} />
+      <hr />
+      <StudentForm onAddStudent={handleAddStudent} />
+    </div>
+  );
+}
+
+export default App;
+
+
+📁 src/StudentTable.jsx
+import React from "react";
+
+function StudentTable({ students }) {
+  return (
+    <table border="1" cellPadding="10">
+      <thead>
+        <tr>
+          <th>Sl No</th>
+          <th>Name</th>
+          <th>USN</th>
+          <th>Total Marks</th>
+        </tr>
+      </thead>
+      <tbody>
+        {students.map((stud) => (
+          <tr key={stud.slno}>
+            <td>{stud.slno}</td>
+            <td>{stud.name}</td>
+            <td>{stud.usn}</td>
+            <td>{stud.tmarks}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
+export default StudentTable;
+
+
+📁 src/StudentForm.jsx
+import React, { useState } from "react";
+
+function StudentForm({ onAddStudent }) {
+  const [name, setName] = useState("");
+  const [usn, setUsn] = useState("");
+  const [tmarks, setTmarks] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newStudent = {
+      name,
+      usn,
+      tmarks: parseInt(tmarks),
+    };
+    onAddStudent(newStudent);
+    setName("");
+    setUsn("");
+    setTmarks("");
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <h3>Add New Student</h3>
+      <input
+        type="text"
+        placeholder="Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        required
+      />
+      <input
+        type="text"
+        placeholder="USN"
+        value={usn}
+        onChange={(e) => setUsn(e.target.value)}
+        required
+      />
+      <input
+        type="number"
+        placeholder="Total Marks"
+        value={tmarks}
+        onChange={(e) => setTmarks(e.target.value)}
+        required
+      />
+      <button type="submit">Add</button>
+    </form>
+  );
+}
+
+export default StudentForm;
+
+
+📁 src/main.jsx
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+)
+
+
+▶️ Run
+npm run dev
+
+
+✅ Expected Output
+Student Registration Portal
+
+Sl No | Name   | USN      | Total Marks
+1     | Girish | RVCE001  | 150
+2     | Ravi   | RVCE002  | 145
+
+Add New Student
+[Name] [USN] [Total Marks] [Add Button]
+
+Adding new student updates table dynamically.
