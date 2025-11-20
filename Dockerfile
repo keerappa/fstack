@@ -1,0 +1,18 @@
+# ---- Stage 1: Builder ----
+FROM node:18 AS builder
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+# ---- Stage 2: Final Image ----
+FROM node:18-slim
+WORKDIR /app
+
+COPY --from=builder /app ./
+
+EXPOSE 3000
+
+CMD ["node", "index.js"]
