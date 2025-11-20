@@ -1,0 +1,102 @@
+# **📘 PROGRAM 4 — Integrate Git with Docker for Source-Controlled Application Builds**
+
+---
+
+## **1. Project Structure**
+
+```
+program4/
+│── Dockerfile
+│── index.js
+│── package.json
+│── package-lock.json
+└── node_modules/
+```
+
+---
+
+## **2. Required Code**
+
+### **index.js**
+
+```js
+const express = require("express");
+const app = express();
+
+const PORT = 3000;
+
+app.get("/", (req, res) => {
+    res.send("Hello from Git + Docker Integration!");
+});
+
+app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+});
+```
+
+---
+
+### **Dockerfile (Multi-Stage Build)**
+
+```dockerfile
+# ---- Stage 1: Builder ----
+FROM node:18 AS builder
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+# ---- Stage 2: Final Image ----
+FROM node:18-slim
+WORKDIR /app
+
+COPY --from=builder /app ./
+
+EXPOSE 3000
+
+CMD ["node", "index.js"]
+```
+
+---
+
+## **3. Required Commands**
+
+### **Initialize project**
+
+```bash
+npm init -y
+npm install express
+```
+
+### **Build Docker Image**
+
+```bash
+docker build -t program4-app .
+```
+
+### **Run Docker Container**
+
+```bash
+docker run -d -p 3000:3000 --name program4-container program4-app
+```
+
+---
+
+## **4. Git Commands**
+
+### **Initialize Git & Commit**
+
+```bash
+git init
+git add .
+git commit -m "Program 4 - Git + Docker Integration"
+```
+
+### **Push to GitHub**
+
+```bash
+git remote add origin <repo-url>
+git branch -M main
+git push -u origin main
