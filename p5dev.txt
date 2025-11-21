@@ -1,0 +1,113 @@
+# 📘 **PROGRAM 5 — Demonstrate CI Integration by Running Jenkins in a Docker Container**
+
+---
+
+## **1. Project Structure**
+
+```
+program-5/
+│── Dockerfile
+└── docker-compose.yml
+```
+
+---
+
+## **2. Required Code**
+
+### ✅ **Dockerfile**
+
+```dockerfile
+FROM jenkins/jenkins:lts
+
+USER root
+RUN apt-get update && apt-get install -y docker.io
+USER jenkins
+```
+
+---
+
+### ✅ **docker-compose.yml**
+
+```yaml
+services:
+  jenkins:
+    build:
+      context: .
+    container_name: jenkins-ci
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  jenkins_home:
+```
+
+---
+
+## **3. Required Commands (Write in Lab Record)**
+
+### **Step 1 — Create project**
+
+```bash
+mkdir program-5
+cd program-5
+```
+
+### **Step 2 — Build Jenkins image**
+
+```bash
+docker compose build
+```
+
+### **Step 3 — Start Jenkins container**
+
+```bash
+docker compose up -d
+docker ps
+```
+
+### **Step 4 — Access Jenkins**
+
+Browser:
+
+```
+http://localhost:8080
+```
+
+View admin password:
+
+```bash
+docker logs jenkins-ci
+# OR
+docker exec -it jenkins-ci cat /var/jenkins_home/secrets/initialAdminPassword
+```
+
+### **Step 5 — List images**
+
+```bash
+docker images
+```
+
+### **Step 6 — Stop and remove**
+
+```bash
+docker compose down
+docker rmi lab5-jenkins
+```
+
+(Replace image name if different.)
+
+---
+
+# ✅ **This is the complete Program-5 write-up.**
+
+If you want, I can make:
+
+📄 **Program-5 Viva Questions**
+📄 **Short Theory Paragraph for record**
+📄 **Program-5 Output Screenshot List**
+
+Just say **“give viva”** or **“give theory”**.
