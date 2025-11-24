@@ -1,0 +1,268 @@
+1. PROJECT FOLDER STRUCTURE (VERY IMPORTANT)
+
+Create a folder:
+
+program6/
+
+
+Inside that, create the React project using:
+
+npx create-react-app program6
+
+
+Your final structure will look like this:
+
+program6/
+│
+└── program6/                     ← React app folder
+      │
+      ├── myinventory.js          ← BACKEND (Node + Express)
+      │
+      ├── package.json
+      ├── node_modules/
+      │
+      └── src/
+            ├── index.js
+            ├── to_inventory.js
+            ├── App.js (ignore)
+            ├── index.css
+            └── …
+
+✅ 2. FULL PROGRAM CODE (LAB MANUAL VERSION)
+🟦 index.js (inside: program6/program6/src/index.js)
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import { AddInventory, Display_Inventory } from './to_inventory';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <Display_Inventory/>
+    <AddInventory />
+  </React.StrictMode>
+);
+
+🟦 myinventory.js (inside: program6/program6/myinventory.js)
+const express =  require('express');
+const cors = require('cors');
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());       // to support JSON-encoded bodies
+
+const inventory = [
+    {id:1, prodname: "prod1", qty: 12, price:12},
+    {id:2, prodname: "prod2", qty: 1, price:13},
+    {id:3, prodname: "prod3", qty: 10, price:14},
+    {id:4, prodname: "prod4", qty: 19, price:16},
+];
+
+app.get('/',(req, res, err)=>{
+    res.json(inventory);
+})
+
+app.post('/add',(req,res)=>{
+    console.log(req.body.id);
+    const invent = {
+        id: req.body.id,
+        prodname: req.body.prodname,
+        qty: req.body.qty,
+        price: req.body.price
+    };
+    inventory.push(invent)
+    res.json(inventory);
+});
+
+app.listen(8000,()=>{
+    console.log('express is working at http://localhost:8000');
+})
+
+🟦 to_inventory.js (inside: program6/program6/src/to_inventory.js)
+import React, { useState } from "react";
+import axios from "axios";
+
+function Display_Inventory() {
+  const [res, setres] = useState([]);
+
+  const resp = async () => {
+    const response = await axios.get("http://localhost:8000");
+    console.log("asdfasdf", response.data)
+    setres(response.data);
+  };
+  
+  resp();
+
+  return (
+    <div>
+      <h1>Inventory Management</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {res.map((inventory) => (
+            <tr key={inventory.id}>
+              <td>{inventory.id}</td>
+              <td>{inventory.name}</td>
+              <td>{inventory.qty}</td>
+              <td>{inventory.price}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+
+function AddInventory() {
+
+  const [ id, setId ] = useState(0);
+  const [ name, setName ] = useState('');
+  const [ qty, setQty ] = useState(0);
+  const [ price, setPrice ] = useState(0);
+  const [inventory, setInventory] =useState([]);
+
+  const SubmitEvent = () => {
+    const fo = { "id":id,"name": name,"qty":qty, "price":price };
+    console.log("fo ",fo);
+
+    const resp = async () => {
+      const response = await axios.post("http://localhost:8000/add", fo);
+      console.log(response.data)
+      const getresponse = await axios.get("http://localhost:8000");
+      setInventory(getresponse.data);
+    }
+    resp();
+  };
+
+  return (
+    <div>
+      <h1>Inventory Management1</h1>
+     
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Product Name</th>
+              <th>Quantity</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr>
+              <td>ID</td>
+              <td>
+                <input type="number"
+                  name="id"
+                  value={id}
+                  onChange={(e) => setId(e.target.value)}
+                />
+              </td>
+            </tr>
+
+            <tr>
+              <td>Product Name</td>
+              <td>
+                <input type="text"
+                  name="prodname"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)} />
+              </td>
+            </tr>
+
+            <tr>
+              <td>Quantity</td>
+              <td><input type="number"
+                name="qty"
+                value={qty}
+                onChange={(e) => setQty(e.target.value)} /></td>
+            </tr>
+
+            <tr>
+              <td>Price</td>
+              <td><input type="number"
+                name="price"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)} /></td>
+            </tr>
+
+            <tr>
+              <td><input type="submit" name="onSubmit" onClick={SubmitEvent} /></td>
+            </tr>
+
+          </tbody>
+        </table>
+    </div>
+  );
+}
+
+export { Display_Inventory, AddInventory };
+
+✅ 3. COMMANDS + WHERE TO EXECUTE
+
+This is extremely important.
+
+⭐ 1️⃣ Create React App
+
+Run this in:
+
+D:\RVCE\3rd sem\full stack\lab programs\program6
+
+
+Command:
+
+npx create-react-app program6
+
+⭐ 2️⃣ Install dependencies (INSIDE React project)
+
+Go here:
+
+cd "D:\RVCE\3rd sem\full stack\lab programs\program6\program6"
+
+
+Run:
+
+npm install express cors axios
+
+⭐ 3️⃣ Run Backend
+
+Stay in:
+
+D:\RVCE\3rd sem\full stack\lab programs\program6\program6
+
+
+Run:
+
+node myinventory.js
+
+
+You should see:
+
+express is working at http://localhost:8000
+
+⭐ 4️⃣ Run Frontend (React)
+
+Open new PowerShell window.
+
+Go here:
+
+cd "D:\RVCE\3rd sem\full stack\lab programs\program6\program6"
+
+
+Run:
+
+npm start
+
+
+React opens at:
+
+http://localhost:3000
