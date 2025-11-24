@@ -1,3 +1,9 @@
+FILE 1: App.js
+
+👉 Save this in:
+
+D:\RVCE\3rd sem\full stack\lab programs\program5\program5\src\App.js
+
 import React from "react";
 import RegistrationForm from "./RegistrationForm";
 
@@ -11,14 +17,11 @@ function App() {
 
 export default App;
 
+✅ 📌 FILE 2: RegistrationForm.js
 
+👉 Save this in:
 
-
-
-
-
-
-
+D:\RVCE\3rd sem\full stack\lab programs\program5\program5\src\RegistrationForm.js
 
 import React, { useState } from "react";
 
@@ -118,3 +121,52 @@ function RegistrationForm() {
 }
 
 export default RegistrationForm;
+
+✅ 📌 NOW THE IMPORTANT PART: ALL COMMANDS TO RUN
+
+Follow these EXACT commands in PowerShell:
+
+STEP 1 — Go to your project folder
+cd "D:\RVCE\3rd sem\full stack\lab programs\program5\program5"
+
+
+Check contents:
+
+dir
+
+
+You must see:
+
+node_modules
+
+public
+
+src
+
+package.json
+
+STEP 2 — Open src folder
+cd src
+
+STEP 3 — Create RegistrationForm.js
+notepad RegistrationForm.js
+
+
+Paste the full code → Save → Close.
+
+STEP 4 — Edit App.js
+notepad App.js
+
+
+Paste the App.js code → Save → Close.
+
+STEP 5 — Go back to project root
+cd ..
+
+
+Now you're inside:
+
+...\program5\program5>
+
+STEP 6 — Start React App
+npm start
