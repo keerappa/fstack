@@ -1,0 +1,68 @@
+program-3/
+│-- Dockerfile
+│-- package.json
+│-- app.js
+
+
+# Use official Node image
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirement file and install dependencies
+COPY package*.json ./
+RUN npm install --production
+
+# Copy application code
+COPY . .
+
+# Expose port 5000
+EXPOSE 5000
+
+# Run the app
+CMD ["npm", "start"]
+
+
+const express = require("express");
+const app = express();
+
+app.get("/", (req, res) => {
+  res.send("Hello from Simple Node Docker!");
+});
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
+
+
+{
+  "name": "program-3",
+  "version": "1.0.0",
+  "description": "Simple Node app for Docker lab",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
+
+
+docker build -t program-3 .
+
+
+docker run -p 5000:5000 program-3
+
+
+http://localhost:5000/
+
+
+docker container ls -a
+docker container stop <container-id>
+docker container rm <container-id>
+docker image rm program-3
+
+
