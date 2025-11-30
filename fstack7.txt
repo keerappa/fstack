@@ -1,8 +1,28 @@
 ==========================================================
+LAB 7 — MongoDB CRUD + Comparison + Logical Selectors
+==========================================================
+
+PROGRAM QUESTION (WRITE IN RECORD)
+-----------------------------------------------------------
+Create a database and a collection. Insert 5 employee 
+documents with the following fields:
+
+employee_id, name, department, salary, hire_date,
+performance_score, status.
+
+Write queries using:
+• Comparison operators: $gt, $lt, $gte, $lte, $ne, $in
+• Logical operators: AND, $or
+• One combined complex condition query.
+
+Also connect to MongoDB using terminal and Compass.
+
+
+==========================================================
 INSTALLING MONGOSH (ALL WORKING METHODS)
 ==========================================================
 
-METHOD 1 — Official Standalone Binary (Best for Any Ubuntu)
+METHOD 1 — Official Standalone Binary (Works Everywhere)
 -----------------------------------------------------------
 # Step 1 – Download
 wget https://downloads.mongodb.com/compass/mongosh-2.2.9-linux-x64.tgz
@@ -20,61 +40,45 @@ sudo chmod +x /usr/local/bin/mongosh
 mongosh --version
 
 
-
-METHOD 2 — If lab machine has OLD mongo shell
+METHOD 2 — If lab machine already has old shell
 ------------------------------------------------
-Just run:
 mongo
-
-This opens the old MongoDB shell which also supports:
-  use
-  show dbs
-  show collections
-  db.collection.find()
-  db.collection.insertMany()
+(Use this if mongosh is not available)
 
 
-
-METHOD 3 — If mongosh installed via apt (RVCE lab machines)
------------------------------------------------------------
-# If preinstalled
+METHOD 3 — If apt has mongosh (RVCE labs)
+------------------------------------------------
 mongosh --version
-
-# If not present, ask teacher to install OR switch to old `mongo`
-mongo
-
+(If not found → use mongo command)
 
 
 ==========================================================
 CONNECTION COMMANDS
 ==========================================================
 
-1) Connect to RVCE College MongoDB Server (ONLY in RVCE WiFi)
--------------------------------------------------------------
+1) RVCE WiFi – Connect to college MongoDB server
+------------------------------------------------
 mongosh "mongodb://mca037:mca037@172.16.34.31:27017"
 
-(If this doesn't work, try old shell)
-
+# If mongosh not installed:
 mongo "mongodb://mca037:mca037@172.16.34.31:27017"
 
 
-
-2) Connect to My Atlas Cluster (Used in PG/Home)
--------------------------------------------------------------
+2) Connect to Atlas Cluster (home/PG)
+------------------------------------------------
 mongosh "mongodb+srv://girish4936_db_user:<PASSWORD>@cluster0.bcre7it.mongodb.net/"
 
-IMPORTANT:
-If password contains &, replace with %26
-Example:
-Girish&8050 → Girish%268050
-
+NOTE:
+If password contains &
+replace & with %26  
+Example: Girish&8050 → Girish%268050
 
 
 ==========================================================
-AFTER CONNECTING (Same in RVCE OR Atlas)
+AFTER CONNECTING (Same in RVCE or Atlas)
 ==========================================================
 
-# Switch database (creates if not exists)
+# Switch (or create) database
 use company
 
 # Show databases
@@ -83,13 +87,12 @@ show dbs
 # Show collections
 show collections
 
-# Create collection (optional)
+# Create collection
 db.createCollection("employees")
 
 
-
 ==========================================================
-INSERT DOCUMENTS (Program 7)
+INSERT DOCUMENTS (5 EMPLOYEES)
 ==========================================================
 
 db.employees.insertMany([
@@ -140,11 +143,9 @@ db.employees.insertMany([
 ])
 
 
-
 ==========================================================
 PROGRAM 7 — ALL REQUIRED QUERIES
 ==========================================================
-
 
 --------------------------
 1) Comparison Selectors
@@ -166,7 +167,6 @@ db.employees.find({
 })
 
 
-
 --------------------------
 2) Logical Operators
 --------------------------
@@ -186,7 +186,6 @@ db.employees.find({
 })
 
 
-
 --------------------------
 3) Combined Complex Query (MOST IMPORTANT)
 --------------------------
@@ -198,21 +197,66 @@ db.employees.find({
 })
 
 
-
 ==========================================================
-EXAM THEORY (WRITE IN BOOK)
-==========================================================
-
-$gt : greater than  
-$lt : less than  
-$lte : less than or equal  
-$gte : greater than or equal  
-$ne : not equal  
-$in : matches any value in array  
-AND : default when two conditions written  
-$or : at least one condition must match  
-
+COMPASS INSTALLATION + HOW TO RUN QUERIES
 ==========================================================
 
+INSTALL COMPASS (GUI)
+------------------------------------------------
+# Download Compass .deb
+wget https://downloads.mongodb.com/compass/mongodb-compass_1.43.0_amd64.deb
+
+# Install
+sudo dpkg -i mongodb-compass_1.43.0_amd64.deb
+sudo apt --fix-broken install -y
+
+
+CONNECT IN COMPASS
+------------------------------------------------
+1) Open Compass  
+2) Paste connection string:
+
+For Atlas:
+mongodb+srv://girish4936_db_user:<PASSWORD>@cluster0.bcre7it.mongodb.net/
+
+For RVCE:
+mongodb://mca037:mca037@172.16.34.31:27017
+
+3) Select database → “company”  
+4) Select “employees” collection  
+5) To run queries:
+   Click **"Playground"**  
+   and type queries like:
+
+   db.employees.find({ salary: { $gt: 90000 } })
+
+6) Click **Run**
+
+
+==========================================================
+EXAM THEORY (WRITE IN RECORD)
+==========================================================
+
+Comparison Operators:
+$gt  – greater than  
+$lt  – less than  
+$gte – greater than or equal  
+$lte – less than or equal  
+$ne  – not equal  
+$in  – matches any value from list  
+
+Logical Operators:
+AND – default when you list two conditions  
+$or – at least one condition must satisfy  
+
+MongoDB Commands:
+use dbname  
+show dbs  
+show collections  
+db.collection.insertMany()  
+db.collection.find()  
+
+
+==========================================================
 END OF LAB 7
 ==========================================================
