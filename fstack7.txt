@@ -94,47 +94,47 @@ INSERT DOCUMENTS (Program 7)
 
 db.employees.insertMany([
   {
-    employee_id: 101,
-    name: "Sonia Rao",
+    employee_id: 201,
+    name: "Neha Sharma",
     department: "Engineering",
-    salary: 95000,
-    hire_date: ISODate("2023-01-15"),
-    performance_score: 4.5,
+    salary: 88000,
+    hire_date: ISODate("2023-02-10"),
+    performance_score: 4.3,
     status: "Active"
   },
   {
-    employee_id: 102,
-    name: "Rajesh Kumar",
-    department: "HR",
-    salary: 68000,
-    hire_date: ISODate("2024-03-22"),
-    performance_score: 4.1,
+    employee_id: 202,
+    name: "Manoj Verma",
+    department: "Finance",
+    salary: 72000,
+    hire_date: ISODate("2024-01-18"),
+    performance_score: 3.9,
     status: "Active"
   },
   {
-    employee_id: 103,
-    name: "Arjun Singh",
+    employee_id: 203,
+    name: "Ravi Teja",
     department: "Engineering",
-    salary: 120000,
-    hire_date: ISODate("2022-06-01"),
-    performance_score: 4.8,
+    salary: 115000,
+    hire_date: ISODate("2022-09-05"),
+    performance_score: 4.7,
     status: "Active"
   },
   {
-    employee_id: 104,
-    name: "Priya Mehta",
+    employee_id: 204,
+    name: "Aishwarya Iyer",
     department: "Sales",
-    salary: 85000,
-    hire_date: ISODate("2023-11-10"),
-    performance_score: 4.2,
+    salary: 93000,
+    hire_date: ISODate("2023-10-15"),
+    performance_score: 4.4,
     status: "Active"
   },
   {
-    employee_id: 105,
-    name: "Vikram Reddy",
-    department: "Sales",
-    salary: 85000,
-    hire_date: ISODate("2024-08-01"),
+    employee_id: 205,
+    name: "Karthik Shetty",
+    department: "Marketing",
+    salary: 78000,
+    hire_date: ISODate("2024-07-20"),
     status: "On Leave"
   }
 ])
