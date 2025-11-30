@@ -1,0 +1,218 @@
+==========================================================
+INSTALLING MONGOSH (ALL WORKING METHODS)
+==========================================================
+
+METHOD 1 — Official Standalone Binary (Best for Any Ubuntu)
+-----------------------------------------------------------
+# Step 1 – Download
+wget https://downloads.mongodb.com/compass/mongosh-2.2.9-linux-x64.tgz
+
+# Step 2 – Extract
+tar -xvzf mongosh-2.2.9-linux-x64.tgz
+
+# Step 3 – Move binary globally
+sudo mv mongosh-2.2.9-linux-x64/bin/mongosh /usr/local/bin/
+
+# Step 4 – Make executable
+sudo chmod +x /usr/local/bin/mongosh
+
+# Step 5 – Test
+mongosh --version
+
+
+
+METHOD 2 — If lab machine has OLD mongo shell
+------------------------------------------------
+Just run:
+mongo
+
+This opens the old MongoDB shell which also supports:
+  use
+  show dbs
+  show collections
+  db.collection.find()
+  db.collection.insertMany()
+
+
+
+METHOD 3 — If mongosh installed via apt (RVCE lab machines)
+-----------------------------------------------------------
+# If preinstalled
+mongosh --version
+
+# If not present, ask teacher to install OR switch to old `mongo`
+mongo
+
+
+
+==========================================================
+CONNECTION COMMANDS
+==========================================================
+
+1) Connect to RVCE College MongoDB Server (ONLY in RVCE WiFi)
+-------------------------------------------------------------
+mongosh "mongodb://mca037:mca037@172.16.34.31:27017"
+
+(If this doesn't work, try old shell)
+
+mongo "mongodb://mca037:mca037@172.16.34.31:27017"
+
+
+
+2) Connect to My Atlas Cluster (Used in PG/Home)
+-------------------------------------------------------------
+mongosh "mongodb+srv://girish4936_db_user:<PASSWORD>@cluster0.bcre7it.mongodb.net/"
+
+IMPORTANT:
+If password contains &, replace with %26
+Example:
+Girish&8050 → Girish%268050
+
+
+
+==========================================================
+AFTER CONNECTING (Same in RVCE OR Atlas)
+==========================================================
+
+# Switch database (creates if not exists)
+use company
+
+# Show databases
+show dbs
+
+# Show collections
+show collections
+
+# Create collection (optional)
+db.createCollection("employees")
+
+
+
+==========================================================
+INSERT DOCUMENTS (Program 7)
+==========================================================
+
+db.employees.insertMany([
+  {
+    employee_id: 101,
+    name: "Sonia Rao",
+    department: "Engineering",
+    salary: 95000,
+    hire_date: ISODate("2023-01-15"),
+    performance_score: 4.5,
+    status: "Active"
+  },
+  {
+    employee_id: 102,
+    name: "Rajesh Kumar",
+    department: "HR",
+    salary: 68000,
+    hire_date: ISODate("2024-03-22"),
+    performance_score: 4.1,
+    status: "Active"
+  },
+  {
+    employee_id: 103,
+    name: "Arjun Singh",
+    department: "Engineering",
+    salary: 120000,
+    hire_date: ISODate("2022-06-01"),
+    performance_score: 4.8,
+    status: "Active"
+  },
+  {
+    employee_id: 104,
+    name: "Priya Mehta",
+    department: "Sales",
+    salary: 85000,
+    hire_date: ISODate("2023-11-10"),
+    performance_score: 4.2,
+    status: "Active"
+  },
+  {
+    employee_id: 105,
+    name: "Vikram Reddy",
+    department: "Sales",
+    salary: 85000,
+    hire_date: ISODate("2024-08-01"),
+    status: "On Leave"
+  }
+])
+
+
+
+==========================================================
+PROGRAM 7 — ALL REQUIRED QUERIES
+==========================================================
+
+
+--------------------------
+1) Comparison Selectors
+--------------------------
+
+# 1.1 salary > 90000 AND salary <= 120000
+db.employees.find({
+  salary: { $gt: 90000, $lte: 120000 }
+})
+
+# 1.2 department in HR or Sales
+db.employees.find({
+  department: { $in: ["HR", "Sales"] }
+})
+
+# 1.3 status not equal to On Leave
+db.employees.find({
+  status: { $ne: "On Leave" }
+})
+
+
+
+--------------------------
+2) Logical Operators
+--------------------------
+
+# 2.1 AND (implicit)
+db.employees.find({
+  department: "Engineering",
+  performance_score: { $gte: 4.5 }
+})
+
+# 2.2 OR
+db.employees.find({
+  $or: [
+    { department: "HR" },
+    { salary: { $gt: 100000 } }
+  ]
+})
+
+
+
+--------------------------
+3) Combined Complex Query (MOST IMPORTANT)
+--------------------------
+
+db.employees.find({
+  status: "Active",
+  department: { $in: ["Engineering", "Sales"] },
+  hire_date: { $lt: ISODate("2024-01-01") }
+})
+
+
+
+==========================================================
+EXAM THEORY (WRITE IN BOOK)
+==========================================================
+
+$gt : greater than  
+$lt : less than  
+$lte : less than or equal  
+$gte : greater than or equal  
+$ne : not equal  
+$in : matches any value in array  
+AND : default when two conditions written  
+$or : at least one condition must match  
+
+==========================================================
+
+END OF LAB 7
+==========================================================
