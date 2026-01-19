@@ -1,150 +1,120 @@
-⚙️ Commands
-npm create vite@latest program4
-# Select: React → JavaScript → No (rolldown)
+```bash
+npx create-react-app program4
 cd program4
-npm install
-npm run dev
+code .
+npm start
+```
 
+`src/App.js`
 
-🧾 Files & Code
-📁 src/App.jsx
-import { useState } from "react";
-import StudentTable from "./StudentTable";
-import StudentForm from "./StudentForm";
+```javascript
+import StudentListTable from "./Student";
 
 function App() {
-  const [students, setStudents] = useState([
-    { slno: 1, name: "Girish", usn: "RVCE001", tmarks: 150 },
-    { slno: 2, name: "Ravi", usn: "RVCE002", tmarks: 145 },
-  ]);
-
-  const handleAddStudent = (newStudent) => {
-    const newSlno = students.length + 1;
-    const updatedStudent = { slno: newSlno, ...newStudent };
-    setStudents([...students, updatedStudent]);
-  };
-
   return (
     <div>
-      <h1>Student Registration Portal</h1>
-      <StudentTable students={students} />
-      <hr />
-      <StudentForm onAddStudent={handleAddStudent} />
+      <StudentListTable />
     </div>
   );
 }
 
 export default App;
+```
 
+`src/Student.js`
 
-📁 src/StudentTable.jsx
+```javascript
 import React from "react";
 
-function StudentTable({ students }) {
-  return (
-    <table border="1" cellPadding="10">
-      <thead>
-        <tr>
-          <th>Sl No</th>
-          <th>Name</th>
-          <th>USN</th>
-          <th>Total Marks</th>
-        </tr>
-      </thead>
-      <tbody>
-        {students.map((stud) => (
-          <tr key={stud.slno}>
-            <td>{stud.slno}</td>
-            <td>{stud.name}</td>
-            <td>{stud.usn}</td>
-            <td>{stud.tmarks}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
+class StudentRow extends React.Component {
+  render() {
+    const s = this.props.stud;
+    return (
+      <tr>
+        <td>{s.id}</td>
+        <td>{s.name}</td>
+        <td>{s.usn}</td>
+        <td>{s.marks}</td>
+      </tr>
+    );
+  }
 }
 
-export default StudentTable;
+class StudentAdd extends React.Component {
+  constructor() {
+    super();
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
 
-
-📁 src/StudentForm.jsx
-import React, { useState } from "react";
-
-function StudentForm({ onAddStudent }) {
-  const [name, setName] = useState("");
-  const [usn, setUsn] = useState("");
-  const [tmarks, setTmarks] = useState("");
-
-  const handleSubmit = (e) => {
+  handleSubmit(e) {
     e.preventDefault();
-    const newStudent = {
-      name,
-      usn,
-      tmarks: parseInt(tmarks),
+    const f = document.forms.studForm;
+    const s = {
+      name: f.name.value,
+      usn: f.usn.value,
+      marks: f.marks.value
     };
-    onAddStudent(newStudent);
-    setName("");
-    setUsn("");
-    setTmarks("");
-  };
+    this.props.addStudent(s);
+    f.name.value = "";
+    f.usn.value = "";
+    f.marks.value = "";
+  }
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <h3>Add New Student</h3>
-      <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-      />
-      <input
-        type="text"
-        placeholder="USN"
-        value={usn}
-        onChange={(e) => setUsn(e.target.value)}
-        required
-      />
-      <input
-        type="number"
-        placeholder="Total Marks"
-        value={tmarks}
-        onChange={(e) => setTmarks(e.target.value)}
-        required
-      />
-      <button type="submit">Add</button>
-    </form>
-  );
+  render() {
+    return (
+      <form name="studForm" onSubmit={this.handleSubmit}>
+        <input type="text" name="name" placeholder="Name" />
+        <input type="text" name="usn" placeholder="USN" />
+        <input type="text" name="marks" placeholder="Marks" />
+        <button>Add</button>
+      </form>
+    );
+  }
 }
 
-export default StudentForm;
+class StudentListTable extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      studs: [
+        { id: 1, name: "stud1", usn: "rvce1", marks: 150 },
+        { id: 2, name: "stud2", usn: "rvce2", marks: 145 }
+      ]
+    };
+    this.addStudent = this.addStudent.bind(this);
+  }
 
+  addStudent(s) {
+    const n = {
+      id: this.state.studs.length + 1,
+      name: s.name,
+      usn: s.usn,
+      marks: s.marks
+    };
+    this.setState({ studs: [...this.state.studs, n] });
+  }
 
-📁 src/main.jsx
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
+  render() {
+    return (
+      <div>
+        <h2>Student Registration</h2>
+        <table border="1">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>USN</th>
+            <th>Marks</th>
+          </tr>
+          {this.state.studs.map(s => (
+            <StudentRow key={s.id} stud={s} />
+          ))}
+        </table>
+        <br />
+        <StudentAdd addStudent={this.addStudent} />
+      </div>
+    );
+  }
+}
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
-
-
-▶️ Run
-npm run dev
-
-
-✅ Expected Output
-Student Registration Portal
-
-Sl No | Name   | USN      | Total Marks
-1     | Girish | RVCE001  | 150
-2     | Ravi   | RVCE002  | 145
-
-Add New Student
-[Name] [USN] [Total Marks] [Add Button]
-
-Adding new student updates table dynamically.
+export default StudentListTable;
+```

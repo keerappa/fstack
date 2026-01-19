@@ -1,0 +1,150 @@
+```bash
+npx create-react-app program3
+cd program3
+npm start
+```
+
+```bash
+cd src
+mkdir ResumeCreate
+```
+
+```javascript
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+
+import ResumeHeader from "./ResumeCreate/ResumeHeader";
+import ResumePersonInfo from "./ResumeCreate/ResumePersonInfo";
+import Education from "./ResumeCreate/Education";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(
+  <React.StrictMode>
+    <ResumeHeader />
+    <ResumePersonInfo />
+    <Education />
+  </React.StrictMode>
+);
+```
+
+```css
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f2f2f2;
+  margin: 0;
+}
+```
+
+```javascript
+import React from "react";
+import "./Resume.css";
+
+class ResumeHeader extends React.Component {
+  render() {
+    return <h1>Job Aspirant Resume</h1>;
+  }
+}
+
+export default ResumeHeader;
+```
+
+```javascript
+import React from "react";
+import "./Resume.css";
+
+class ResumePersonInfo extends React.Component {
+  render() {
+    return (
+      <div>
+        <p>Name : Girish Y</p>
+        <p>Address : Bengaluru</p>
+        <p>Phone No : 9876543210</p>
+        <p>Email : girishy@rvce.edu.in</p>
+      </div>
+    );
+  }
+}
+
+export default ResumePersonInfo;
+```
+
+```javascript
+import React from "react";
+import "./Resume.css";
+
+class Education extends React.Component {
+  render() {
+    const education = [
+      { id: 1, name: "Basaveshwar Science College", place: "Bagalkot", stddeg: "BCA", grade: "9.0" },
+      { id: 2, name: "RV College of Engineering", place: "Bengaluru", stddeg: "MCA", grade: "9.1" }
+    ];
+
+    return (
+      <div>
+        <h2>Educational Qualifications</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Institution</th>
+              <th>Place</th>
+              <th>Degree</th>
+              <th>CGPA</th>
+            </tr>
+          </thead>
+          <tbody>
+            {education.map(e => (
+              <tr key={e.id}>
+                <td>{e.id}</td>
+                <td>{e.name}</td>
+                <td>{e.place}</td>
+                <td>{e.stddeg}</td>
+                <td>{e.grade}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+}
+
+export default Education;
+```
+
+```css
+h1 {
+  text-align: center;
+  color: navy;
+  margin-top: 20px;
+}
+
+h2 {
+  color: maroon;
+}
+
+div {
+  margin: 20px;
+}
+
+table {
+  width: 90%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: center;
+}
+
+th {
+  background-color: #dddddd;
+}
+```
+
+```bash
+npm start
+```

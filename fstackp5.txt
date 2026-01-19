@@ -1,172 +1,97 @@
-FILE 1: App.js
+```bash
+npx create-react-app program5
+cd program5
+npm start
+```
 
-👉 Save this in:
-
-D:\RVCE\3rd sem\full stack\lab programs\program5\program5\src\App.js
-
-import React from "react";
-import RegistrationForm from "./RegistrationForm";
-
-function App() {
-  return (
-    <div style={{ padding: "20px" }}>
-      <RegistrationForm />
-    </div>
-  );
-}
-
-export default App;
-
-✅ 📌 FILE 2: RegistrationForm.js
-
-👉 Save this in:
-
-D:\RVCE\3rd sem\full stack\lab programs\program5\program5\src\RegistrationForm.js
-
+```javascript
 import React, { useState } from "react";
 
 function RegistrationForm() {
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
 
-  const validateForm = () => {
-    let formErrors = {};
-    let isValid = true;
+  function validate() {
+    const err = {};
 
-    if (!name) {
-      isValid = false;
-      formErrors.name = "Name is required"; 
-    } else if (name.length < 3) {
-      isValid = false;
-      formErrors.name = "Name must be at least 3 characters";
+    if (name === "") {
+      err.name = "Name required";
+    } else if (!/^[A-Za-z]{3,}$/.test(name)) {
+      err.name = "Minimum 3 letters";
     }
 
-    const emailPattern = /\S+@\S+\.\S+/;
-    if (!email) {
-      isValid = false;
-      formErrors.email = "Email is required";
-    } else if (!emailPattern.test(email)) {
-      isValid = false;
-      formErrors.email = "Invalid Email Format";
+    if (email === "") {
+      err.email = "Email required";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      err.email = "Invalid email";
     }
 
-    if (!password) {
-      isValid = false;
-      formErrors.password = "Password is required";
-    } else if (password.length < 8) {
-      isValid = false;
-      formErrors.password = "Password must be at least 8 characters";
+    if (password === "") {
+      err.password = "Password required";
+    } else if (!/^.{8,}$/.test(password)) {
+      err.password = "Minimum 8 characters";
     }
 
-    setErrors(formErrors);
-    return isValid;
-  };
+    setErrors(err);
+    return Object.keys(err).length === 0;
+  }
 
-  const handleSubmit = (e) => {
+  function handleSubmit(e) {
     e.preventDefault();
-
-    if (validateForm()) {
-      alert("Form Submitted Successfully!");
-
+    if (validate()) {
+      alert("Form submitted");
       setName("");
       setEmail("");
       setPassword("");
       setErrors({});
     }
-  };
+  }
 
   return (
     <div>
-      <h2>Registration Form</h2>
-
+      <h1>Registration Form</h1>
       <form onSubmit={handleSubmit}>
-
         <input
           type="text"
-          name="name"
-          placeholder="Enter your name"
+          placeholder="Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        <div style={{ color: "red" }}>{errors.name}</div>
+        <div>{errors.name}</div>
 
         <input
           type="text"
-          name="email"
-          placeholder="Enter your email"
+          placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <div style={{ color: "red" }}>{errors.email}</div>
+        <div>{errors.email}</div>
 
         <input
           type="password"
-          name="password"
-          placeholder="Enter password"
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <div style={{ color: "red" }}>{errors.password}</div>
-
-        <br /><br />
+        <div>{errors.password}</div>
 
         <button type="submit">Register</button>
-
       </form>
     </div>
   );
 }
 
 export default RegistrationForm;
+```
 
-✅ 📌 NOW THE IMPORTANT PART: ALL COMMANDS TO RUN
+```javascript
+import RegistrationForm from "./RegistrationForm";
 
-Follow these EXACT commands in PowerShell:
+function App() {
+  return <RegistrationForm />;
+}
 
-STEP 1 — Go to your project folder
-cd "D:\RVCE\3rd sem\full stack\lab programs\program5\program5"
-
-
-Check contents:
-
-dir
-
-
-You must see:
-
-node_modules
-
-public
-
-src
-
-package.json
-
-STEP 2 — Open src folder
-cd src
-
-STEP 3 — Create RegistrationForm.js
-notepad RegistrationForm.js
-
-
-Paste the full code → Save → Close.
-
-STEP 4 — Edit App.js
-notepad App.js
-
-
-Paste the App.js code → Save → Close.
-
-STEP 5 — Go back to project root
-cd ..
-
-
-Now you're inside:
-
-...\program5\program5>
-
-STEP 6 — Start React App
-npm start
+export default App;
+```
