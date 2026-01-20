@@ -1,3 +1,11 @@
+└── src
+    ├── App.js
+    ├── RegistrationForm.js
+    ├── index.js
+    ├── App.css
+    └── index.css
+
+
 ```bash
 npx create-react-app program5
 cd program5
