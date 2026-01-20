@@ -1,13 +1,30 @@
-```bash
+
 npx create-react-app program3
 cd program3
+cd src
+mkdir ResumeCreate
+cd ..
 npm start
 ```
 
-```bash
-cd src
-mkdir ResumeCreate
+---
+
+## 📁 FILE STRUCTURE YOU MUST CREATE
+
 ```
+src
+│── index.js
+│── index.css
+└── ResumeCreate
+    │── ResumeHeader.js
+    │── ResumePersonInfo.js
+    │── Education.js
+    │── Resume.css
+```
+
+---
+
+## 📄 src/index.js
 
 ```javascript
 import React from "react";
@@ -29,6 +46,10 @@ root.render(
 );
 ```
 
+---
+
+## 📄 src/index.css
+
 ```css
 body {
   font-family: Arial, Helvetica, sans-serif;
@@ -36,6 +57,10 @@ body {
   margin: 0;
 }
 ```
+
+---
+
+## 📄 src/ResumeCreate/ResumeHeader.js
 
 ```javascript
 import React from "react";
@@ -49,6 +74,10 @@ class ResumeHeader extends React.Component {
 
 export default ResumeHeader;
 ```
+
+---
+
+## 📄 src/ResumeCreate/ResumePersonInfo.js
 
 ```javascript
 import React from "react";
@@ -69,6 +98,10 @@ class ResumePersonInfo extends React.Component {
 
 export default ResumePersonInfo;
 ```
+
+---
+
+## 📄 src/ResumeCreate/Education.js
 
 ```javascript
 import React from "react";
@@ -114,6 +147,10 @@ class Education extends React.Component {
 export default Education;
 ```
 
+---
+
+## 📄 src/ResumeCreate/Resume.css
+
 ```css
 h1 {
   text-align: center;
@@ -143,8 +180,4 @@ th, td {
 th {
   background-color: #dddddd;
 }
-```
-
-```bash
-npm start
 ```
