@@ -1,0 +1,140 @@
+
+## PROJECT STRUCTURE
+
+```
+program6
+│── myinventory.js
+│── package.json
+│── node_modules
+└── src
+    │── index.js
+    │── to_inventory.js
+```
+
+---
+
+## COMMANDS
+
+```bash
+npm init -y
+npm install express cors mongoose
+npx create-react-app .
+npm install axios
+node myinventory.js
+npm start
+```
+
+---
+
+## `myinventory.js`
+
+```js
+const exp = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
+
+const app = exp();
+app.use(cors());
+app.use(exp.json());
+
+mongoose.connect(
+  "mongodb://mca037:mca037@172.16.34.31:27017/inventorydb"
+);
+
+const InvSchema = new mongoose.Schema({
+  id: Number,
+  prodname: String,
+  qty: Number,
+  price: Number
+});
+
+const Inv = mongoose.model("Inv", InvSchema);
+
+app.get('/', async (req, res) => {
+  const d = await Inv.find();
+  res.json(d);
+});
+
+app.post('/add', async (req, res) => {
+  const obj = new Inv(req.body);
+  await obj.save();
+  const d = await Inv.find();
+  res.json(d);
+});
+
+app.listen(8000);
+```
+
+---
+
+## `src/to_inventory.js`
+
+```js
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
+function Display() {
+  const [d, s] = useState([]);
+
+  useEffect(() => {
+    axios.get("http://localhost:8000").then(r => s(r.data));
+  }, []);
+
+  return (
+    <table border="1">
+      <tr><th>ID</th><th>Name</th><th>Qty</th><th>Price</th></tr>
+      {d.map(x => (
+        <tr key={x._id}>
+          <td>{x.id}</td>
+          <td>{x.prodname}</td>
+          <td>{x.qty}</td>
+          <td>{x.price}</td>
+        </tr>
+      ))}
+    </table>
+  );
+}
+
+function Add() {
+  const [id, si] = useState('');
+  const [p, sp] = useState('');
+  const [q, sq] = useState('');
+  const [pr, spr] = useState('');
+
+  const add = () => {
+    axios.post("http://localhost:8000/add", {
+      id, prodname: p, qty: q, price: pr
+    });
+  };
+
+  return (
+    <>
+      <input onChange={e => si(e.target.value)} />
+      <input onChange={e => sp(e.target.value)} />
+      <input onChange={e => sq(e.target.value)} />
+      <input onChange={e => spr(e.target.value)} />
+      <button onClick={add}>Add</button>
+    </>
+  );
+}
+
+export { Display, Add };
+```
+
+---
+
+## `src/index.js`
+
+```js
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Display, Add } from './to_inventory';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <>
+    <Display />
+    <Add />
+  </>
+);
+```

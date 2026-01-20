@@ -1,0 +1,110 @@
+
+
+## PROGRAM 9 — EXAM-READY
+
+---
+
+### 1️⃣ React App Setup
+
+```bash
+npx create-react-app program9
+cd program9
+npm install axios
+npm start
+```
+
+---
+
+### 2️⃣ Backend (JSON Server)
+
+**db.json**
+
+```json
+{
+  "employees": [
+    { "id": 1, "firstName": "John", "lastName": "Doe", "email": "john.doe@example.com" },
+    { "id": 2, "firstName": "Jane", "lastName": "Smith", "email": "jane.smith@example.com" }
+  ]
+}
+```
+
+```bash
+npx json-server --watch db.json --port 5000
+```
+
+---
+
+### 3️⃣ `src/App.js`
+
+```javascript
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
+const API = "http://localhost:5000/employees";
+
+function App() {
+  const [data, setData] = useState([]);
+  const [cur, setCur] = useState(null);
+
+  useEffect(() => { get(); }, []);
+
+  const get = async () => {
+    const r = await axios.get(API);
+    setData(r.data);
+  };
+
+  const save = async (e) => {
+    e.id ? await axios.put(API + "/" + e.id, e) : await axios.post(API, e);
+    get();
+    setCur(null);
+  };
+
+  const del = async (id) => {
+    await axios.delete(API + "/" + id);
+    get();
+  };
+
+  if (cur) return <Form emp={cur} save={save} cancel={() => setCur(null)} />;
+
+  return (
+    <div>
+      <h2>Employees</h2>
+      <button onClick={() => setCur({ firstName: "", lastName: "", email: "" })}>Add</button>
+      <table border="1">
+        <thead>
+          <tr><th>First</th><th>Last</th><th>Email</th><th>Act</th></tr>
+        </thead>
+        <tbody>
+          {data.map(e => (
+            <tr key={e.id}>
+              <td>{e.firstName}</td>
+              <td>{e.lastName}</td>
+              <td>{e.email}</td>
+              <td>
+                <button onClick={() => setCur(e)}>Edit</button>
+                <button onClick={() => del(e.id)}>Del</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+const Form = ({ emp, save, cancel }) => {
+  const [f, setF] = useState(emp);
+
+  return (
+    <form onSubmit={e => { e.preventDefault(); save(f); }}>
+      <input value={f.firstName} onChange={e => setF({ ...f, firstName: e.target.value })} />
+      <input value={f.lastName} onChange={e => setF({ ...f, lastName: e.target.value })} />
+      <input value={f.email} onChange={e => setF({ ...f, email: e.target.value })} />
+      <button>Save</button>
+      <button type="button" onClick={cancel}>Cancel</button>
+    </form>
+  );
+};
+
+export default App;
+```

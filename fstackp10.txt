@@ -1,0 +1,107 @@
+
+
+```bash
+npx create-react-app program10
+cd program10
+npm install react-router-dom axios cors
+npm start
+```
+
+---
+
+### `src/pages/Home.js`
+
+```javascript
+import React from 'react';
+
+function Home() {
+  return (
+    <div>
+      <h1>Home Page</h1>
+      <p>Welcome to the homepage of our application!</p>
+    </div>
+  );
+}
+
+export default Home;
+```
+
+---
+
+### `src/pages/About.js`
+
+```javascript
+import React from 'react';
+
+function About() {
+  return (
+    <div>
+      <h1>About Us</h1>
+      <p>This is the about page, where you can learn more about us.</p>
+    </div>
+  );
+}
+
+export default About;
+```
+
+---
+
+### `src/pages/Contact.js`
+
+```javascript
+import React from 'react';
+
+function Contact() {
+  return (
+    <div>
+      <h1>Contact Page</h1>
+      <p>Get in touch with us through this contact page.</p>
+    </div>
+  );
+}
+
+export default Contact;
+```
+
+---
+
+### `src/App.js`
+
+```javascript
+import React from 'react';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import Home from './pages/Home';
+import About from './pages/About';
+import Contact from './pages/Contact';
+
+function App() {
+  return (
+    <BrowserRouter>
+      <nav>
+        <ul>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/about">About</Link></li>
+          <li><Link to="/contact">Contact</Link></li>
+        </ul>
+      </nav>
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;
+```
+
+---
+
+### Execution
+
+```bash
+npm start
+```
